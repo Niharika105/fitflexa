@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Fitflexa</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to right, #4facfe, #00f2fe);
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px;
+      background-color: #ffffffcc;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .header h1 {
+      flex: 1;
+      text-align: center;
+      font-size: 2.5rem;
+      margin: 0;
+      color: #333;
+    }
+
+    .header button {
+      background-color: #ff4d4d;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    section, nav, .section {
+      background-color: white;
+      margin: 20px auto;
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 600px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    input, select, textarea {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      margin-bottom: 15px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      background-color: #4facfe;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    nav button {
+      background-color: #00c6ff;
+    }
+
+    .section {
+      display: none;
+    }
+
+    .section.active {
+      display: block;
+    }
+
+    ul {
+      padding-left: 20px;
+    }
+
+    textarea {
+      resize: vertical;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header with centered title and right-aligned logout -->
+  <div class="header">
+    <h1>🏋️ Fitflexa</h1>
+    <button onclick="logout()">🚪 Logout</button>
+  </div>
+
+  <!-- Create Profile -->
+  <section>
+    <h2>👤 Create Profile</h2>
+    <input type="text" id="name" placeholder="Name" />
+    <input type="number" id="age" placeholder="Age" />
+    <input type="number" id="weight" placeholder="Weight (kg)" />
+    <input type="number" id="height" placeholder="Height (cm)" />
+    <input type="text" id="health-issues" placeholder="Any Health issues" />
+    <select id="goal">
+      <option value="">Select Goal</option>
+      <option value="Weight Loss">Weight Loss</option>
+      <option value="Muscle Gain">Muscle Gain</option>
+      <option value="Flexibility">Flexibility</option>
+    </select>
+    <button onclick="saveProfile()">Save Profile</button>
+    <p id="profileMessage"></p>
+  </section>
+
+  <!-- Navigation -->
+  <nav>
+    <button onclick="showSection('workout')">🏃 Workout Plan</button>
+    <button onclick="showSection('nutrition')">🥗 Nutrition Plan</button>
+    <button onclick="showSection('community')">💬 Community Wall</button>
+    <button onclick="showSection('friends')">🤝 Friends & Challenges</button>
+  </nav>
+
+  <!-- Sections -->
+  <div id="workout" class="section">
+    <h2>Workout Plan</h2>
+    <p>Start your fitness routine:</p>
+    <ul>
+      <li>💪 Strength Training</li>
+      <li>🧘 Yoga</li>
+      <li>🏃 Cardio</li>
+    </ul>
+  </div>
+
+  <div id="nutrition" class="section">
+    <h2>Nutrition Plan</h2>
+    <ul>
+      <li>🥗 High Protein Meal</li>
+      <li>🍌 Balanced Breakfast</li>
+      <li>🍲 Detox Plan</li>
+    </ul>
+  </div>
+
+  <div id="community" class="section">
+    <h2>Community Wall</h2>
+    <textarea id="newPost" placeholder="Share your progress..."></textarea>
+    <button onclick="addPost()">Post</button>
+    <div id="posts"></div>
+  </div>
+
+  <div id="friends" class="section">
+    <h2>Friends & Challenges</h2>
+    <p>Send friend requests:</p>
+    <ul>
+      <li>John <button onclick="sendRequest('John')">Add</button></li>
+      <li>Emma <button onclick="sendRequest('Emma')">Add</button></li>
+    </ul>
+    <p id="friendMessage"></p>
+  </div>
+
+  <!-- JavaScript -->
+  <script>
+    function logout() {
+      alert("Logged out!");
+      // Add actual logout logic if needed
+    }
+
+    function saveProfile() {
+      const name = document.getElementById("name").value;
+      const age = document.getElementById("age").value;
+      const weight = document.getElementById("weight").value;
+      const height = document.getElementById("height").value;
+      const health = document.getElementById("health-issues").value;
+      const goal = document.getElementById("goal").value;
+
+      if (name && age && weight && height && goal) {
+        document.getElementById("profileMessage").innerText = "✅ Profile saved!";
+      } else {
+        document.getElementById("profileMessage").innerText = "⚠️ Please fill all required fields.";
+      }
+    }
+
+    function showSection(id) {
+      const sections = document.querySelectorAll(".section");
+      sections.forEach(section => section.classList.remove("active"));
+      document.getElementById(id).classList.add("active");
+    }
+
+    function addPost() {
+      const postText = document.getElementById("newPost").value.trim();
+      if (postText) {
+        const postDiv = document.createElement("div");
+        postDiv.innerText = "📝 " + postText;
+        document.getElementById("posts").appendChild(postDiv);
+        document.getElementById("newPost").value = "";
+      }
+    }
+
+    function sendRequest(name) {
+      document.getElementById("friendMessage").innerText = `✅ Friend request sent to ${name}!`;
+    }
+  </script>
+</body>
+</html>
